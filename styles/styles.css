@@ -1,0 +1,60 @@
+body {
+    background-color: #2B2F3E;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    color: ivory;
+}
+
+.container {
+    width: 85%;
+    margin: auto;
+}
+
+#searchBox {
+    width: 100%;
+    border-style: none;
+    border-radius: 12px;
+    margin: 12px 0 20px;
+    padding: 3px 10px;
+}
+
+.cards-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card {
+    width: 30%;
+    background-color: #4C5264;
+    border-radius: 3px;
+}
+
+.card picture {
+    width: 100%;
+}
+
+.card picture img {
+    width: 100%;
+    border-radius: 3px 3px 0 0;
+}
+
+.card .content {
+    margin: 0 5px;
+}
+
+.card .title {
+    margin: 2px 0;
+}
+
+.card .year {
+    margin: 2px 0;
+}
+
+.card .ratings {
+    margin: 2px 0 4px;
+}
+
+
