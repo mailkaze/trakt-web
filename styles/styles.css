@@ -14,24 +14,67 @@ body {
 #searchBox {
     width: 100%;
     border-style: none;
-    border-radius: 12px;
+    border-radius: 18px;
     margin: 12px 0 20px;
-    padding: 3px 10px;
+    padding: 5px 15px;
     font-size: 1.2em;
+    color: #26262e;
 }
 
 .cards-container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
+}
+
+@keyframes pulse-loading {
+    0% {
+
+    }
+    50% {
+        color: ivory;
+    }
+    100% {
+        color: #4C5264;
+    }
+}
+
+.loading {
+    color: #4C5264;
+    font-weight: bold;
+    font-size: 1.5em;
+    margin: auto;
+    transition: 1s ease-in-out;
+    animation: 2s pulse-loading infinite;
 }
 
 .card {
-    width: 30%;
+    width: 31%;
     background-color: #4C5264;
     border-radius: 5px;
-    margin-bottom: 15px;
+    margin: 7px 5px;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.2);
+    transition: 0.5s;
+    animation: slide-up 0.4s ease;
+    cursor: pointer;
+}
+
+@keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card:hover {
+    background-color:  rgb(104, 112, 136);
+    box-shadow: none;
+    transform: translateY(3px);
 }
 
 .card picture {
@@ -59,4 +102,20 @@ body {
     margin: 2px 0 4px;
 }
 
+#load-more {
+    width: 100%;
+    font-size: 1.2em;
+    background-color: #4C5264;
+    border-style: none;
+    border-radius: 12px;
+    color: ivory;
+    padding: 6px;
+    transition: 0.2s;
+    display: none;
+    margin-bottom: 8px;
+}
+#load-more:hover {
+    background-color: rgb(104, 112, 136);
+    cursor: pointer;
+}
 

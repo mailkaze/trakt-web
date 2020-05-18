@@ -6,9 +6,14 @@ const tmdbUrl = 'https://api.themoviedb.org/3'
 const tmdbImageUrl = 'https://image.tmdb.org/t/p/'
 const tmdbImageSize = 'w154'
 
-// TODO: mostrar mensaje de cargando
-// no mostrar las tarjetas que no tienen imagen
-// redondear el rating
+const searchBox = document.getElementById('searchBox')
+const cardsContainer = document.getElementsByClassName('cards-container')[0]
+const loadMore = document.getElementById('load-more')
+
+let currentPage = 0
+let totalPages = 0
+
+// que la paginación se carge al hacer scroll casi al fondo
 
 const getRating = async (slug, media) => {
     const res = await fetch(`${traktUrl}/${media}/${slug}/ratings`, {
@@ -26,12 +31,15 @@ const getRating = async (slug, media) => {
 const getPoster = async (tmdbId, media) => {
     const res = await fetch(`${tmdbUrl}/${media}/${tmdbId}?api_key=${tmdbApiKey}`)
     const data = await res.json()
-    const poster = `${tmdbImageUrl}${tmdbImageSize}${data.poster_path}`
+    let poster = ''
+    data.poster_path
+    ? poster = `${tmdbImageUrl}${tmdbImageSize}${data.poster_path}`
+    : poster = null
     return poster
 }
 
-const searchMedia = async query => {
-    const res = await fetch(`${traktUrl}/search/movie,show?query=${query}`, {
+const searchMedia = async (query, page=1) => {
+    const res = await fetch(`${traktUrl}/search/movie,show?query=${query}&page=${page}&limit=12`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -39,11 +47,16 @@ const searchMedia = async query => {
             'trakt-api-key': traktClientId
         }
     })
+    currentPage = res.headers.get('X-Pagination-Page')
+    totalPages = res.headers.get('X-Pagination-Page-Count')
+    console.log('current page: ', currentPage, 'total pages: ', totalPages)
     const data = await res.json()
-    let elements = []
+    console.log(data)
     let element = {}
-
-    for (e of data) {
+    // for (e of data) {
+    for (i = 0; i < 12; i++) { 
+        const e = data[i]
+        console.log(e.index)
         if (e.type === 'movie') {
             element = {
                 img: await getPoster(e.movie.ids.tmdb, 'movie'),
@@ -59,38 +72,60 @@ const searchMedia = async query => {
                 rating: await getRating(e.show.ids.slug, 'shows')
             }
         }
-        elements.push(element)
+        renderCard(element)
     }
-    return elements
+    currentPage++
+    if (currentPage <= totalPages) {
+        loadMore.style.display = 'block'
+    }
 }
 
-const renderCards = data => {
-    const cardsContainer = document.getElementsByClassName('cards-container')[0]
-    cardsContainer.innerHTML = ''
-    const fragment = new DocumentFragment
-    data.forEach(e => {
+const renderCard = data => {
+    if (data.img) { 
         const card = document.createElement('article')
         card.classList.add('card')
+        const rating = Math.round(data.rating * 10)
         card.innerHTML = `
             <picture>
-                <img src=${e.img} alt=${e.title}>
+                <img src=${data.img} alt=${data.title}>
             </picture>
             <div class="content">
-                <h4 class="title">${e.title}</h4>
-                <p class="year">${e.year}</p>
-                <p class="ratings">${e.rating}</p>
+                <h4 class="title">${data.title}</h4>
+                <p class="year">${data.year}</p>
+                <p class="ratings">${rating}%</p>
             </div>
         `
-        fragment.appendChild(card)
-    })
-    cardsContainer.appendChild(fragment)
+        cardsContainer.appendChild(card)
+    }
 }
 
-const searchBox = document.getElementById('searchBox')
-
-searchBox.addEventListener('keyup',async e => {
+searchBox.addEventListener('keyup', async e => {
     if (e.keyCode === 13) {
-        const data = await searchMedia(searchBox.value)
-        renderCards(data)
+        cardsContainer.innerHTML = ''
+        loadMore.style.display = 'none'
+        await searchMedia(searchBox.value)
     }
 })
+
+loadMore.addEventListener('click', async () => {
+    loadMore.style.display = 'none'
+    await searchMedia(searchBox.value, currentPage)
+})
+
+// const renderLoading = () => {
+//     const loading = document.createElement('h3')
+//     loading.classList.add('loading')
+//     loading.textContent = 'Loading, please wait ...'
+//     const cardsContainer = document.getElementsByClassName('cards-container')[0]
+//     cardsContainer.innerHTML = ''
+//     cardsContainer.appendChild(loading)
+// }
+
+// window.addEventListener('scroll', async () => {
+//     if (this.oldScroll < this.scrollY) {
+//         if (document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 300) {
+
+//         }
+//     }
+//     this.oldScroll = this.scrollY
+// })
