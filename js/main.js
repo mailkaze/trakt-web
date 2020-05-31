@@ -1,5 +1,4 @@
 const traktClientId = 'fd4ce6e13c2ff160d8b2ba0ca3cd67282c43f794c155faa35d018593338d2b6c'
-const traktClientSecret = 'ca2b43e9fd876dbe5feec594035584341ace0445e419e425c3825fd01498bafb'
 const tmdbApiKey = 'b5b72fd56d635b01367976dd0ef04121'
 const traktUrl = 'https://api.trakt.tv'
 const tmdbUrl = 'https://api.themoviedb.org/3'
@@ -53,23 +52,24 @@ const searchMedia = async (query, page=1) => {
     const data = await res.json()
     console.log(data)
     let element = {}
-    // for (e of data) {
+
     for (i = 0; i < 12; i++) { 
         const e = data[i]
-        console.log(e.index)
         if (e.type === 'movie') {
             element = {
                 img: await getPoster(e.movie.ids.tmdb, 'movie'),
                 title: e.movie.title,
                 year: e.movie.year,
-                rating: await getRating(e.movie.ids.slug, 'movies')
+                rating: await getRating(e.movie.ids.slug, 'movies'),
+                imdb: e.movie.ids.imdb
             }
         } else if (e.type === 'show') {
             element = {
                 img: await getPoster(e.show.ids.tmdb, 'tv'),
                 title: e.show.title,
                 year: e.show.year,
-                rating: await getRating(e.show.ids.slug, 'shows')
+                rating: await getRating(e.show.ids.slug, 'shows'),
+                imdb: e.show.ids.imdb
             }
         }
         renderCard(element)
@@ -85,15 +85,18 @@ const renderCard = data => {
         const card = document.createElement('article')
         card.classList.add('card')
         const rating = Math.round(data.rating * 10)
+        const imdbUrl = 'https://www.imdb.com/title/'
         card.innerHTML = `
-            <picture>
-                <img src=${data.img} alt=${data.title}>
-            </picture>
-            <div class="content">
-                <h4 class="title">${data.title}</h4>
-                <p class="year">${data.year}</p>
-                <p class="ratings">${rating}%</p>
-            </div>
+            <a href=${imdbUrl}${data.imdb} target="_blank">
+                <picture>
+                    <img src=${data.img} alt=${data.title}>
+                </picture>
+                <div class="content">
+                    <h4 class="title">${data.title}</h4>
+                    <p class="year">${data.year}</p>
+                    <p class="ratings">${rating}%</p>
+                </div>
+            </a>
         `
         cardsContainer.appendChild(card)
     }

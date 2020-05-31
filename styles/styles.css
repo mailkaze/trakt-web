@@ -80,6 +80,14 @@ body {
     transform: translateY(3px);
 }
 
+.card > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: ivory;
+}
+
 .card picture {
     width: 100%;
 }
@@ -122,3 +130,20 @@ body {
     cursor: pointer;
 }
 
+@media screen and (min-width: 650px) {
+    .card {
+        width: 23%;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .card {
+        width: 18%;
+    }
+}
+
+@media screen and (min-width: 1050px) {
+    .card {
+        width: 11%;
+    }
+}
