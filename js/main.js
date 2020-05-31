@@ -8,6 +8,7 @@ const tmdbImageSize = 'w154'
 const searchBox = document.getElementById('searchBox')
 const cardsContainer = document.getElementsByClassName('cards-container')[0]
 const loadMore = document.getElementById('load-more')
+const checkbox = document.getElementById('dark-mode-checkbox')
 
 let currentPage = 0
 let totalPages = 0
@@ -113,6 +114,14 @@ searchBox.addEventListener('keyup', async e => {
 loadMore.addEventListener('click', async () => {
     loadMore.style.display = 'none'
     await searchMedia(searchBox.value, currentPage)
+})
+
+checkbox.addEventListener('change', function(e) {
+    if (e.target.checked === true) {
+        document.body.classList.add('is-dark-mode')
+    } else {
+        document.body.classList.remove('is-dark-mode')
+    }
 })
 
 // const renderLoading = () => {
