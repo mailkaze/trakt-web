@@ -13,6 +13,7 @@ body {
     --cardHover: #E9EBEE;
     --switch: #282828;
     --switch-ball: white;
+    --grey: #646475;
 }
 
 .container {
@@ -23,14 +24,29 @@ body {
     align-items: center;
 }
 
-.container #searchBox {
+.input-container {
     width: 80%;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.input-container #searchBox {
+    width: 100%;
     border-style: none;
     border-radius: 18px;
     margin: 12px 0 10px;
     padding: 5px 18px;
-    font-size: 1.3em;
-    color: #26262e;
+    font-size: 1.1em;
+    color: var(--text);
+    box-sizing: border-box;
+}
+
+.input-container i {
+    position: absolute;
+    top: 19px;
+    right: 12px;
+    color: var(--grey);
 }
 
 .dark-mode {
@@ -87,6 +103,27 @@ body {
     100% {
         color: var(--card);
     }
+}
+
+.empty {
+    color: var(--grey);
+    margin: auto;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty span {
+    font-size: 1.6em;
+    font-weight: 600;
+}
+
+.empty i {
+    margin: auto;
+    font-size: 7em;
+    transform: rotate(12deg);
 }
 
 .loading {
@@ -186,6 +223,12 @@ body {
 }
 
 @media screen and (min-width: 650px) {
+    .input-container #searchBox {
+        font-size: 1.3em;
+    }
+    .input-container i {
+        top: 21px;
+    }
     .card {
         width: 23%;
     }

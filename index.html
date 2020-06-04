@@ -7,17 +7,26 @@
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="input-container">
         <input type="text" placeholder="Search movies and shows ..." id="searchBox" style="display: block;">
+        <i class="fas fa-search"></i>
+    </div>
+    <div class="container">        
         <div class="dark-mode">
             <span>Dark Mode</span>
             <input type="checkbox" id="dark-mode-checkbox">
             <label for="dark-mode-checkbox" class="switch"><div class="switch-ball"></div></label>
         </div>
-        <div class="cards-container"></div>
+        <div class="cards-container">
+            <div class="empty">
+                <span>Search something!</span>
+                <i class="fas fa-ticket-alt"></i>
+            </div>
+        </div>
         <button id="load-more">Load more results</button>
     </div>
-    
+
+    <script src="https://kit.fontawesome.com/a20e852377.js" crossorigin="anonymous"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
