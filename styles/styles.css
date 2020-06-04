@@ -2,7 +2,7 @@ body {
     background-color: var(--background);
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: var(--text);
 }
 
@@ -47,6 +47,7 @@ body {
     top: 19px;
     right: 12px;
     color: var(--grey);
+    cursor: pointer;
 }
 
 .dark-mode {
@@ -117,7 +118,8 @@ body {
 
 .empty span {
     font-size: 1.6em;
-    font-weight: 600;
+    font-weight: 700;
+    font-style: italic;
 }
 
 .empty i {
@@ -128,7 +130,7 @@ body {
 
 .loading {
     color: var(--card);
-    font-weight: bold;
+    font-weight: 700;
     font-size: 1.5em;
     margin: auto;
     transition: 1s ease-in-out;
@@ -192,8 +194,20 @@ body {
     margin: 2px 0;
 }
 
+.card .year i {
+    padding: 0 3px 0 1px;
+    font-size: 0.9em;
+}
+
 .card .ratings {
     margin: 2px 0 4px;
+    display: flex;
+    align-items: center;
+    
+}
+.card .ratings i {
+    padding-right: 3px;
+    font-size: 0.8em;
 }
 
 #load-more {

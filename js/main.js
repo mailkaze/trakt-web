@@ -9,6 +9,7 @@ const searchBox = document.getElementById('searchBox')
 const cardsContainer = document.getElementsByClassName('cards-container')[0]
 const loadMore = document.getElementById('load-more')
 const checkbox = document.getElementById('dark-mode-checkbox')
+const searchIcon = document.getElementsByClassName('search-icon')[0]
 
 let currentPage = 0
 let totalPages = 0
@@ -94,8 +95,8 @@ const renderCard = data => {
                 </picture>
                 <div class="content">
                     <h4 class="title">${data.title}</h4>
-                    <p class="year">${data.year}</p>
-                    <p class="ratings">${rating}%</p>
+                    <p class="year"><i class="fas fa-calendar-alt"></i><span>${data.year}</span></p>
+                    <p class="ratings"><i class="fas fa-star"></i><span>${rating}%</span></p>
                 </div>
             </a>
         `
@@ -109,6 +110,12 @@ searchBox.addEventListener('keyup', async e => {
         loadMore.style.display = 'none'
         await searchMedia(searchBox.value)
     }
+})
+
+searchIcon.addEventListener('click',async e => {
+    cardsContainer.innerHTML = ''
+    loadMore.style.display = 'none'
+    await searchMedia(searchBox.value)
 })
 
 loadMore.addEventListener('click', async () => {
