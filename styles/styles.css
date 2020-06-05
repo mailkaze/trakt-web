@@ -38,7 +38,7 @@ body {
     margin: 12px 0 10px;
     padding: 5px 18px;
     font-size: 1.1em;
-    color: var(--text);
+    color: var(--grey);
     box-sizing: border-box;
 }
 
