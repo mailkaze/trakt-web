@@ -6,17 +6,17 @@ const tmdbImageUrl = 'https://image.tmdb.org/t/p/'
 const tmdbImageSize = 'w154'
 
 const searchBox = document.getElementById('searchBox')
+const searchIcon = document.getElementsByClassName("search-icon")[0];
+const checkbox = document.getElementById("dark-mode-checkbox");
+const spinner = document.getElementsByClassName('loading-spinner')[0]
 const cardsContainer = document.getElementsByClassName('cards-container')[0]
+const loading = document.createElement("h3");
 const loadMore = document.getElementById('load-more')
-const checkbox = document.getElementById('dark-mode-checkbox')
-const searchIcon = document.getElementsByClassName('search-icon')[0]
 
 let currentPage = 0
 let totalPages = 0
 
-// que la paginación se carge al hacer scroll casi al fondo
-
-const getRating = async (slug, media) => {
+const getRating = async (slug, media) => { // Gets the rating of a media from Trakt.
     const res = await fetch(`${traktUrl}/${media}/${slug}/ratings`, {
         method: 'GET',
         headers: {
@@ -29,7 +29,7 @@ const getRating = async (slug, media) => {
     return ratings.rating
 }
 
-const getPoster = async (tmdbId, media) => {
+const getPoster = async (tmdbId, media) => { // Gets the poster of a media from TMDB
     const res = await fetch(`${tmdbUrl}/${media}/${tmdbId}?api_key=${tmdbApiKey}`)
     const data = await res.json()
     let poster = ''
@@ -39,7 +39,8 @@ const getPoster = async (tmdbId, media) => {
     return poster
 }
 
-const searchMedia = async (query, page=1) => {
+const searchMedia = async (query, page=1) => { // Gets the list of the medias that match with the search, from Trakt.
+    spinner.style.display = 'block'
     const res = await fetch(`${traktUrl}/search/movie,show?query=${query}&page=${page}&limit=12`, {
         method: 'GET',
         headers: {
@@ -55,7 +56,9 @@ const searchMedia = async (query, page=1) => {
     console.log(data)
     let element = {}
 
-    for (i = 0; i < 12; i++) { 
+    spinner.style.display = "none";
+
+    for (i = 0; i < 12; i++) { // Constructs an object with the data needed from the items sent by Trakt.
         const e = data[i]
         if (e.type === 'movie') {
             element = {
@@ -80,9 +83,11 @@ const searchMedia = async (query, page=1) => {
     if (currentPage <= totalPages) {
         loadMore.style.display = 'block'
     }
+
+    
 }
 
-const renderCard = data => {
+const renderCard = data => { // Constructs and renders the cards for each item given by the search.
     if (data.img) { 
         const card = document.createElement('article')
         card.classList.add('card')
@@ -104,26 +109,25 @@ const renderCard = data => {
     }
 }
 
-searchBox.addEventListener('keyup', async e => {
+searchBox.addEventListener('keyup', async e => { // Executes the search by the Enter key.
     if (e.keyCode === 13) {
         cardsContainer.innerHTML = ''
         loadMore.style.display = 'none'
         await searchMedia(searchBox.value)
     }
 })
-
-searchIcon.addEventListener('click',async e => {
+searchIcon.addEventListener('click',async e => { // Executes the search by the search icon.
     cardsContainer.innerHTML = ''
     loadMore.style.display = 'none'
     await searchMedia(searchBox.value)
 })
 
-loadMore.addEventListener('click', async () => {
+loadMore.addEventListener('click', async () => { // Calls the search function for the next page of items.
     loadMore.style.display = 'none'
     await searchMedia(searchBox.value, currentPage)
 })
 
-checkbox.addEventListener('change', function(e) {
+checkbox.addEventListener('change', function(e) { // Puts ON or OFF the Dark Mode.
     if (e.target.checked === true) {
         document.body.classList.add('is-dark-mode')
     } else {
@@ -131,8 +135,7 @@ checkbox.addEventListener('change', function(e) {
     }
 })
 
-// const renderLoading = () => {
-//     const loading = document.createElement('h3')
+// const renderLoading = () => { // Shows a 'loading' warning while the fetch runs.
 //     loading.classList.add('loading')
 //     loading.textContent = 'Loading, please wait ...'
 //     const cardsContainer = document.getElementsByClassName('cards-container')[0]
@@ -140,6 +143,8 @@ checkbox.addEventListener('change', function(e) {
 //     cardsContainer.appendChild(loading)
 // }
 
+
+// TODO: que la paginación se carge al hacer scroll casi al fondo
 // window.addEventListener('scroll', async () => {
 //     if (this.oldScroll < this.scrollY) {
 //         if (document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 300) {

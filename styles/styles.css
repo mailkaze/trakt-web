@@ -106,6 +106,10 @@ body {
     }
 }
 
+.loading-spinner {
+    display: none;
+}
+
 .empty {
     color: var(--grey);
     margin: auto;
